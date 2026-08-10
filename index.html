@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaptionCraft | Free Caption Generator</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#0a0f1e;color:#fff;min-height:100vh}
+button,input,select,textarea{font:inherit}
+.auth{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 15% 10%,#4938a8 0,transparent 32%),radial-gradient(circle at 85% 90%,#087f99 0,transparent 30%),#080c18}
+.box{width:min(430px,100%);padding:32px;border:1px solid #29334d;border-radius:24px;background:#11182acc;backdrop-filter:blur(18px);box-shadow:0 25px 80px #0008}
+.logo{width:68px;height:68px;margin:0 auto 15px;border-radius:20px;display:grid;place-items:center;font-size:32px;background:linear-gradient(135deg,#7657ff,#21d4fd)}
+.center{text-align:center}.brand{font-size:28px}.muted{color:#9ba7bd;margin-top:7px}
+h2{margin:24px 0 16px}.err{color:#ff8794;min-height:20px;margin-bottom:8px;font-size:14px}
+label{display:block;color:#bbc5d8;font-size:14px;margin-bottom:7px}
+.field{margin-bottom:15px}
+input,select,textarea{width:100%;border:1px solid #303b55;background:#151d32;color:#fff;border-radius:11px;padding:13px;outline:none}
+textarea{min-height:105px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:#7657ff}
+.btn{width:100%;border:0;border-radius:11px;padding:14px;background:linear-gradient(135deg,#7657ff,#21d4fd);color:white;font-weight:bold;cursor:pointer}
+.switch{margin-top:18px;color:#929db3;text-align:center;font-size:14px}.switch span{color:#8edcff;font-weight:bold;cursor:pointer}
+.app{display:none;min-height:100vh}.nav{height:70px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;background:#101729;border-bottom:1px solid #273149;position:sticky;top:0;z-index:5}
+.navbrand{display:flex;gap:10px;align-items:center;font-weight:bold;font-size:19px}.navlogo{width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(135deg,#7657ff,#21d4fd)}
+.navright{display:flex;align-items:center;gap:12px}.email{color:#9da8bb;font-size:13px}.logout{padding:9px 13px;border-radius:9px;border:1px solid #37425b;background:#1b2438;color:#fff;cursor:pointer}
+.wrap{width:90%;max-width:1200px;margin:auto;padding:40px 0 70px}.welcome h1{font-size:38px;margin-bottom:8px}.welcome p{color:#929db3}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:30px}.panel{background:#11182a;border:1px solid #273149;border-radius:19px;padding:24px}.ptitle{font-size:20px;font-weight:bold;margin-bottom:20px}
+.result{min-height:280px;border:1px solid #29354d;background:#090f1d;border-radius:14px;padding:19px;line-height:1.75;white-space:pre-wrap;color:#dfe5f1}.placeholder{text-align:center;color:#66728a;padding-top:85px}
+.actions{display:flex;gap:9px;margin-top:13px}.action{flex:1;padding:11px;border:1px solid #36415b;border-radius:9px;background:#192239;color:#fff;cursor:pointer}
+.history{margin-top:32px}.hhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.cards{display:grid;gap:13px}.card{background:#11182a;border:1px solid #273149;border-radius:14px;padding:18px}.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.tag{font-size:11px;background:#202b45;color:#b8c5ff;padding:5px 8px;border-radius:20px}.ctext{white-space:pre-wrap;line-height:1.7;color:#d9dfeb}.cardactions{display:flex;gap:8px;margin-top:12px}.small{padding:8px 11px;border-radius:8px;border:1px solid #36415b;background:#192239;color:#fff;cursor:pointer}.empty{text-align:center;color:#68748b;padding:30px;border:1px solid #273149;border-radius:14px;background:#11182a}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.email{display:none}.welcome h1{font-size:30px}}
+@media(max-width:550px){.wrap{width:92%;padding-top:28px}.panel{padding:18px}.box{padding:25px}.actions{flex-wrap:wrap}.action{min-width:45%}}
+</style>
+</head>
+<body>
+
+<div class="auth" id="auth">
+  <div class="box">
+    <div class="center">
+      <div class="logo">✨</div>
+      <div class="brand">CaptionCraft</div>
+      <div class="muted">Free Social Media Caption Generator</div>
+    </div>
+
+    <div id="login">
+      <h2>Welcome Back</h2>
+      <div class="err" id="loginErr"></div>
+      <div class="field"><label>Email</label><input id="le" type="email" placeholder="you@example.com"></div>
+      <div class="field"><label>Password</label><input id="lp" type="password" placeholder="Your password"></div>
+      <button class="btn" id="loginBtn">Login</button>
+      <div class="switch">Don't have an account? <span id="showSignup">Create Account</span></div>
+    </div>
+
+    <div id="signup" style="display:none">
+      <h2>Create Account</h2>
+      <div class="err" id="signupErr"></div>
+      <div class="field"><label>Name</label><input id="sn" placeholder="Your name"></div>
+      <div class="field"><label>Email</label><input id="se" type="email" placeholder="you@example.com"></div>
+      <div class="field"><label>Password</label><input id="sp" type="password" placeholder="Minimum 6 characters"></div>
+      <button class="btn" id="signupBtn">Create Account</button>
+      <div class="switch">Already have an account? <span id="showLogin">Login</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="app">
+  <nav class="nav">
+    <div class="navbrand"><div class="navlogo">✨</div>CaptionCraft</div>
+    <div class="navright"><span class="email" id="email"></span><button class="logout" id="logout">Logout</button></div>
+  </nav>
+
+  <main class="wrap">
+    <div class="welcome"><h1>Create Captions ✨</h1><p>Choose your options and create a caption for your social media post.</p></div>
+
+    <div class="grid">
+      <section class="panel">
+        <div class="ptitle">Caption Settings</div>
+        <div class="field"><label>What is your post about?</label><textarea id="topic" placeholder="Example: Marilyn Monroe vintage photo"></textarea></div>
+        <div class="field"><label>Platform</label><select id="platform"><option>Facebook</option><option>Instagram</option><option>TikTok</option></select></div>
+        <div class="field"><label>Category</label><select id="category"><option>Vintage</option><option>Kids</option><option>Animals</option><option>Funny</option><option>Nature</option><option>Fashion</option><option>Motivation</option><option>General</option></select></div>
+        <div class="field"><label>Style</label><select id="style"><option>Elegant</option><option>Emotional</option><option>Short</option><option>Viral</option><option>Storytelling</option></select></div>
+        <div class="field"><label>Language</label><select id="language"><option>English</option><option>Urdu</option><option>Roman Urdu</option><option>Spanish</option><option>Hindi</option></select></div>
+        <div class="field"><label>Caption Length</label><select id="length"><option>Short</option><option selected>Medium</option><option>Long</option></select></div>
+        <button class="btn" id="generate">✨ Generate Caption</button>
+      </section>
+
+      <section class="panel">
+        <div class="ptitle">Your Caption</div>
+        <div class="result" id="result"><div class="placeholder">Your generated caption will appear here ✨</div></div>
+        <div class="actions">
+          <button class="action" id="copy">📋 Copy</button>
+          <button class="action" id="regen">🔄 Regenerate</button>
+          <button class="action" id="clear">🗑 Clear</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="history">
+      <div class="hhead"><h2>📚 Caption History</h2></div>
+      <div class="cards" id="history"><div class="empty">Your saved captions will appear here.</div></div>
+    </section>
+  </main>
+</div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import {getFirestore,collection,addDoc,deleteDoc,doc,query,orderBy,onSnapshot,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+const firebaseConfig={
+ apiKey:"AIzaSyBp3NKyu8Bb90EfQjQ6M5HUHoiBwQDJxXk",
+ authDomain:"caption-generator-ddb05.firebaseapp.com",
+ projectId:"caption-generator-ddb05",
+ storageBucket:"caption-generator-ddb05.firebasestorage.app",
+ messagingSenderId:"405355316544",
+ appId:"1:405355316544:web:302e22cd7d32a3026c66a5",
+ measurementId:"G-71BR72SMDS"
+};
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+let user=null,stopHistory=null;
+
+const $=id=>document.getElementById(id);
+$("showSignup").onclick=()=>{$("login").style.display="none";$("signup").style.display="block"};
+$("showLogin").onclick=()=>{$("signup").style.display="none";$("login").style.display="block"};
+
+$("signupBtn").onclick=async()=>{
+ $("signupErr").textContent="";
+ const name=$("sn").value.trim(),email=$("se").value.trim(),pass=$("sp").value;
+ if(!name||!email||!pass)return $("signupErr").textContent="Please fill all fields.";
+ if(pass.length<6)return $("signupErr").textContent="Password must be at least 6 characters.";
+ try{await createUserWithEmailAndPassword(auth,email,pass)}catch(e){$("signupErr").textContent=errorText(e.code)}
+};
+
+$("loginBtn").onclick=async()=>{
+ $("loginErr").textContent="";
+ const email=$("le").value.trim(),pass=$("lp").value;
+ if(!email||!pass)return $("loginErr").textContent="Please enter email and password.";
+ try{await signInWithEmailAndPassword(auth,email,pass)}catch(e){$("loginErr").textContent=errorText(e.code)}
+};
+
+$("logout").onclick=()=>signOut(auth);
+
+function errorText(code){
+ const m={
+  "auth/email-already-in-use":"This email is already registered.",
+  "auth/invalid-email":"Please enter a valid email.",
+  "auth/weak-password":"Password must be at least 6 characters.",
+  "auth/invalid-credential":"Email or password is incorrect."
+ };
+ return m[code]||"Something went wrong. Please try again.";
+}
+
+onAuthStateChanged(auth,u=>{
+ user=u;
+ if(u){
+  $("auth").style.display="none";$("app").style.display="block";$("email").textContent=u.email;
+  loadHistory(u.uid);
+ }else{
+  $("auth").style.display="grid";$("app").style.display="none";
+  if(stopHistory){stopHistory();stopHistory=null}
+ }
+});
+
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+function hashtags(c){
+ return {
+  Vintage:"#Vintage #Timeless #Classic #Nostalgia",
+  Kids:"#Kids #Cute #Family #SweetMoments",
+  Animals:"#Animals #CuteAnimals #Pets #Love",
+  Funny:"#Funny #Comedy #Fun #Viral",
+  Nature:"#Nature #Beautiful #NatureLovers #Photography",
+  Fashion:"#Fashion #Style #Beauty #Trending",
+  Motivation:"#Motivation #Inspiration #Success #Mindset",
+  General:"#Beautiful #Memories #Photography #Vibes"
+ }[c]||"#Beautiful #Memories #Photography";
+}
+
+function makeCaption(){
+ const t=$("topic").value.trim()||"this beautiful moment";
+ const s=$("style").value,l=$("length").value,lang=$("language").value,c=$("category").value;
+ let x="";
+ if(lang==="English"){
+  if(s==="Elegant")x=`✨ ${cap(t)} — a beautiful reminder that true elegance never goes out of style.${l==="Short"?"":" Some moments have a timeless charm that stays with us long after the picture is taken."}`;
+  else if(s==="Emotional")x=`❤️ ${cap(t)} — some moments are not just seen, they are felt.${l==="Short"?"":" They remind us of the memories and little details that make life meaningful."}`;
+  else if(s==="Viral")x=`🔥 ${cap(t)} and honestly... this deserves more attention!${l==="Short"?"":" Would you stop scrolling for a moment like this? 👀✨"}`;
+  else if(s==="Storytelling")x=`There is a story behind ${t}.${l==="Short"?"":" Sometimes the simplest scenes carry the most unforgettable memories."}`;
+  else x=`${cap(t)} ✨${l==="Short"?"":" A simple moment worth sharing."}`;
+ }else if(lang==="Roman Urdu"){
+  if(s==="Elegant")x=`✨ ${cap(t)} — asal khoobsurti kabhi purani nahi hoti.${l==="Short"?"":" Kuch lamhay apni saadgi aur elegance ki wajah se hamesha yaad rehte hain."}`;
+  else if(s==="Emotional")x=`❤️ ${cap(t)} — kuch lamhay sirf dekhe nahi, mehsoos kiye jate hain.${l==="Short"?"":" Yehi choti choti yaadein zindagi ko khaas banati hain."}`;
+  else if(s==="Viral")x=`🔥 ${cap(t)} — honestly, ye moment miss nahi karna chahiye! 👀${l==="Short"?"":" Aap hotay to isay scroll kar dete ya ruk kar dekhte? 😍"}`;
+  else if(s==="Storytelling")x=`${cap(t)} ke peeche ek khoobsurat kahani hai.${l==="Short"?"":" Kabhi kabhi ek simple sa moment bhi hamesha dil ke qareeb reh jata hai."}`;
+  else x=`${cap(t)} ✨${l==="Short"?"":" Bas ek simple aur khoobsurat moment."}`;
+ }else if(lang==="Urdu"){
+  x=`✨ ${t} — کچھ لمحے صرف دیکھے نہیں جاتے، محسوس بھی کیے جاتے ہیں۔`;
+  if(l!=="Short")x+=` ایسی خوبصورت یادیں ہمیشہ دل کے قریب رہتی ہیں۔`;
+  if(l==="Long")x+=` زندگی کے چھوٹے چھوٹے لمحے ہی اکثر ہماری سب سے خاص یادیں بن جاتے ہیں۔ ❤️`;
+ }else if(lang==="Spanish"){
+  x=`✨ ${cap(t)} — algunos momentos simplemente nunca pasan de moda.${l==="Short"?"":" Hay recuerdos que permanecen para siempre y nos recuerdan la belleza de los pequeños momentos."}`;
+ }else{
+  x=`✨ ${t} — कुछ पल सिर्फ देखे नहीं जाते, महसूस भी किए जाते हैं।${l==="Short"?"":" ऐसी खूबसूरत यादें हमेशा दिल के करीब रहती हैं और जिंदगी को खास बनाती हैं। ❤️"}`;
+ }
+ if(l!=="Short")x+="\n\n"+hashtags(c);
+ return x;
+}
+
+async function generate(){
+ if(!$("topic").value.trim())return alert("Please enter what your post is about.");
+ const text=makeCaption();$("result").textContent=text;await save(text);
+}
+$("generate").onclick=generate;$("regen").onclick=generate;
+$("clear").onclick=()=>$("result").innerHTML='<div class="placeholder">Your generated caption will appear here ✨</div>';
+$("copy").onclick=async()=>{
+ const t=$("result").innerText.trim();
+ if(!t||t.includes("Your generated caption"))return;
+ await navigator.clipboard.writeText(t);
+ $("copy").textContent="✓ Copied!";
+ setTimeout(()=>$("copy").textContent="📋 Copy",1200);
+};
+
+async function save(caption){
+ if(!user)return;
+ await addDoc(collection(db,"users",user.uid,"captions"),{
+  caption,topic:$("topic").value,platform:$("platform").value,category:$("category").value,
+  style:$("style").value,language:$("language").value,length:$("length").value,createdAt:serverTimestamp()
+ });
+}
+
+function loadHistory(uid){
+ if(stopHistory)stopHistory();
+ const q=query(collection(db,"users",uid,"captions"),orderBy("createdAt","desc"));
+ stopHistory=onSnapshot(q,snap=>{
+  if(snap.empty){$("history").innerHTML='<div class="empty">Your saved captions will appear here.</div>';return}
+  $("history").innerHTML="";
+  snap.forEach(ds=>{
+   const d=ds.data(),card=document.createElement("div");card.className="card";
+   const tags=document.createElement("div");tags.className="tags";
+   [d.platform,d.category,d.style,d.language].forEach(v=>{const z=document.createElement("span");z.className="tag";z.textContent=v||"";tags.appendChild(z)});
+   const text=document.createElement("div");text.className="ctext";text.textContent=d.caption||"";
+   const acts=document.createElement("div");acts.className="cardactions";
+   const cp=document.createElement("button");cp.className="small";cp.textContent="📋 Copy";cp.onclick=async()=>{await navigator.clipboard.writeText(d.caption);cp.textContent="✓ Copied";setTimeout(()=>cp.textContent="📋 Copy",1000)};
+   const del=document.createElement("button");del.className="small";del.textContent="🗑 Delete";del.onclick=async()=>{if(confirm("Delete this caption?"))await deleteDoc(doc(db,"users",uid,"captions",ds.id))};
+   acts.append(cp,del);card.append(tags,text,acts);$("history").appendChild(card);
+  });
+ },e=>console.error(e));
+}
+</script>
+</body>
+</html>
