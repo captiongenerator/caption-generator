@@ -231,7 +231,7 @@ snap.forEach(ds=>{
 const d=ds.data(),card=document.createElement("div");card.className="card";
 const tags=document.createElement("div");tags.className="tags";
 [d.platform,d.style,d.language].forEach(v=>{const z=document.createElement("span");z.className="tag";z.textContent=v||"";tags.appendChild(z)});
-const text=document.createElement("div");text.className="ctext";text.textContent=`🔥 Titles:\n${(d.titles||[]).map((t,i)=>`${i+1}. ${t}`).join("\n")}\n\n✍️ Caption:\n${d.caption||""}${d.platform==="YouTube"?`\n\n📝 Description:\n${d.description||""}`}\n\n#️⃣ Hashtags:\n${d.hashtags||""}`;
+const text=document.createElement("div");text.className="ctext";text.textContent="🔥 Titles:\n"+(d.titles||[]).map((t,i)=>(i+1)+". "+t).join("\n")+"\n\n✍️ Caption:\n"+(d.caption||"")+(d.platform==="YouTube"?"\n\n📝 Description:\n"+(d.description||""):"")+"\n\n#️⃣ Hashtags:\n"+(d.hashtags||"");
 const acts=document.createElement("div");acts.className="cardactions";
 const cp=document.createElement("button");cp.className="small";cp.textContent="📋 Copy";cp.onclick=async()=>{await navigator.clipboard.writeText(text.textContent);cp.textContent="✓ Copied";setTimeout(()=>cp.textContent="📋 Copy",1000)};
 const del=document.createElement("button");del.className="small";del.textContent="🗑 Delete";del.onclick=async()=>{if(confirm("Delete this content pack?"))await deleteDoc(doc(db,"users",uid,"captions",ds.id))};
