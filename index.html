@@ -114,7 +114,9 @@ messagingSenderId:"405355316544",
 appId:"1:405355316544:web:302e22cd7d32a3026c66a5",
 measurementId:"G-71BR72SMDS"
 };
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
 let user=null,stopHistory=null;
 const $=id=>document.getElementById(id);
 
@@ -135,7 +137,7 @@ const email=$("le").value.trim(),pass=$("lp").value;
 if(!email||!pass)return $("loginErr").textContent="Please enter email and password.";
 try{await signInWithEmailAndPassword(auth,email,pass)}catch(e){$("loginErr").textContent=err(e.code)}
 };
-function err(c){return {"auth/email-already-in-use":"This email is already registered.","auth/invalid-email":"Please enter a valid email.","auth/weak-password":"Password must be at least 6 characters.","auth/invalid-credential":"Email or password is incorrect."}[c]||"Something went wrong. Please try again."}
+function err(c){return {"auth/email-already-in-use":"This email is already registered.","auth/invalid-email":"Please enter a valid email.","auth/weak-password":"Password must be at least 6 characters.","auth/invalid-credential":"Email or password is incorrect.","auth/operation-not-allowed":"Email/Password sign-in is not enabled in Firebase.","auth/network-request-failed":"Network error. Check your internet connection.","auth/unauthorized-domain":"This website domain is not authorized in Firebase. Add captiongenerator.github.io in Authentication > Settings > Authorized domains."}[c]||("Firebase error: "+c)}
 
 onAuthStateChanged(auth,u=>{
 user=u;
